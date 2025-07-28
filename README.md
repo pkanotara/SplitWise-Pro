@@ -1,6 +1,5 @@
 # SplitWise Pro - Smart Bill Splitting Made Easy
-
-[![React](https://img.shields.io/badge/React-18.x://.s://img.shields.io/badge/License-MIT-greenimg.shields.io/badge/PRs-welcome-brightgreen intuitive bill splitting application built with React that makes splitting expenses with friends, family, or colleagues effortless. Perfect for group trips, shared meals, roommate expenses, and any situation where you need to track and settle shared costs.
+welcome-brightgreen intuitive bill splitting application built with React that makes splitting expenses with friends, family, or colleagues effortless. Perfect for group trips, shared meals, roommate expenses, and any situation where you need to track and settle shared costs.
 
 ## 🌟 Features
 
