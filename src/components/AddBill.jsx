@@ -3,7 +3,7 @@ import {
   MdRestaurant, 
   MdDirectionsCar, 
   MdMovie, 
-  MdShoppingCart,  // Changed from MdShopping
+  MdShoppingCart,
   MdReceipt, 
   MdAttachMoney,
   MdPeople,
@@ -12,6 +12,15 @@ import {
 } from 'react-icons/md';
 import Button from './common/Button';
 import Input from './common/Input';
+// Import constants
+import { 
+  DEFAULT_CATEGORIES, 
+  VALIDATION_RULES, 
+  ERROR_MESSAGES,
+  QUICK_AMOUNTS,
+  COMMON_EXPENSE_DESCRIPTIONS
+} from '../utils/constants';
+import { validateSplit } from '../utils/calculations';
 
 const AddBill = ({ people, onAddBill }) => {
   const [formData, setFormData] = useState({
@@ -24,30 +33,46 @@ const AddBill = ({ people, onAddBill }) => {
   });
   const [errors, setErrors] = useState({});
 
-  const categories = [
-    { value: 'food', label: 'Food & Dining', icon: MdRestaurant, color: '#ef4444' },
-    { value: 'transport', label: 'Transportation', icon: MdDirectionsCar, color: '#3b82f6' },
-    { value: 'entertainment', label: 'Entertainment', icon: MdMovie, color: '#8b5cf6' },
-    { value: 'shopping', label: 'Shopping', icon: MdShoppingCart, color: '#ec4899' }, // Fixed icon
-    { value: 'bills', label: 'Bills & Utilities', icon: MdReceipt, color: '#f59e0b' },
-    { value: 'general', label: 'General', icon: MdAttachMoney, color: '#10b981' }
-  ];
+  // Use categories from constants
+  const categories = DEFAULT_CATEGORIES.map(category => ({
+    ...category,
+    icon: getCategoryIcon(category.id)
+  }));
+
+  function getCategoryIcon(categoryId) {
+    const iconMap = {
+      food: MdRestaurant,
+      transport: MdDirectionsCar,
+      entertainment: MdMovie,
+      shopping: MdShoppingCart,
+      bills: MdReceipt,
+      general: MdAttachMoney
+    };
+    return iconMap[categoryId] || MdAttachMoney;
+  }
 
   const handleSubmit = (e) => {
     e.preventDefault();
     
     const newErrors = {};
-    if (!formData.description.trim()) {
-      newErrors.description = 'Description is required';
+    
+    // Use validation rules from constants
+    if (!formData.description.trim() || 
+        formData.description.length < VALIDATION_RULES.bill.description.minLength) {
+      newErrors.description = `Description must be at least ${VALIDATION_RULES.bill.description.minLength} characters`;
     }
-    if (!formData.amount || parseFloat(formData.amount) <= 0) {
-      newErrors.amount = 'Valid amount is required';
+    
+    const amount = parseFloat(formData.amount);
+    if (!amount || amount < VALIDATION_RULES.bill.amount.min || amount > VALIDATION_RULES.bill.amount.max) {
+      newErrors.amount = `Amount must be between ₹${VALIDATION_RULES.bill.amount.min} and ₹${VALIDATION_RULES.bill.amount.max}`;
     }
+    
     if (!formData.paidBy) {
       newErrors.paidBy = 'Please select who paid';
     }
-    if (formData.splitAmong.length === 0) {
-      newErrors.splitAmong = 'Select at least one person to split among';
+    
+    if (formData.splitAmong.length < VALIDATION_RULES.bill.splitAmong.minParticipants) {
+      newErrors.splitAmong = `Select at least ${VALIDATION_RULES.bill.splitAmong.minParticipants} person to split among`;
     }
 
     setErrors(newErrors);
@@ -91,6 +116,14 @@ const AddBill = ({ people, onAddBill }) => {
     setFormData(prev => ({ ...prev, splitAmong: [] }));
   };
 
+  const setQuickAmount = (amount) => {
+    setFormData(prev => ({ ...prev, amount: amount.toString() }));
+  };
+
+  const getSuggestions = (category) => {
+    return COMMON_EXPENSE_DESCRIPTIONS[category] || [];
+  };
+
   if (people.length === 0) {
     return (
       <div className="card">
@@ -108,23 +141,56 @@ const AddBill = ({ people, onAddBill }) => {
       <h2 className="card-title">Add Bill</h2>
       <form onSubmit={handleSubmit} className="form">
         <div className="form-row">
-          <Input
-            label="Description *"
-            value={formData.description}
-            onChange={(value) => setFormData(prev => ({ ...prev, description: value }))}
-            error={errors.description}
-            placeholder="e.g., Dinner at restaurant"
-          />
+          <div className="form-group">
+            <Input
+              label="Description *"
+              value={formData.description}
+              onChange={(value) => setFormData(prev => ({ ...prev, description: value }))}
+              error={errors.description}
+              placeholder="e.g., Dinner at restaurant"
+              list="descriptionSuggestions"
+            />
+            <datalist id="descriptionSuggestions">
+              {getSuggestions(formData.category).map((suggestion, index) => (
+                <option key={index} value={suggestion} />
+              ))}
+            </datalist>
+          </div>
           
-          <Input
-            label="Amount (₹) *"
-            type="number"
-            step="0.01"
-            value={formData.amount}
-            onChange={(value) => setFormData(prev => ({ ...prev, amount: value }))}
-            error={errors.amount}
-            placeholder="0.00"
-          />
+          <div className="form-group">
+            <Input
+              label="Amount (₹) *"
+              type="number"
+              step="0.01"
+              min={VALIDATION_RULES.bill.amount.min}
+              max={VALIDATION_RULES.bill.amount.max}
+              value={formData.amount}
+              onChange={(value) => setFormData(prev => ({ ...prev, amount: value }))}
+              error={errors.amount}
+              placeholder="0.00"
+            />
+            {/* Quick Amount Buttons */}
+            <div className="quick-amounts" style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap', marginTop: '0.5rem' }}>
+              <span style={{ fontSize: '0.75rem', color: 'var(--text-secondary)', alignSelf: 'center' }}>Quick:</span>
+              {QUICK_AMOUNTS.map(amount => (
+                <button
+                  key={amount}
+                  type="button"
+                  onClick={() => setQuickAmount(amount)}
+                  style={{
+                    padding: '0.25rem 0.5rem',
+                    fontSize: '0.75rem',
+                    border: '1px solid var(--border)',
+                    borderRadius: 'var(--radius-sm)',
+                    background: 'var(--bg-secondary)',
+                    cursor: 'pointer'
+                  }}
+                >
+                  ₹{amount}
+                </button>
+              ))}
+            </div>
+          </div>
         </div>
 
         <div className="form-row">
@@ -136,8 +202,8 @@ const AddBill = ({ people, onAddBill }) => {
               onChange={(e) => setFormData(prev => ({ ...prev, category: e.target.value }))}
             >
               {categories.map(category => (
-                <option key={category.value} value={category.value}>
-                  {category.label}
+                <option key={category.id} value={category.id}>
+                  {category.name}
                 </option>
               ))}
             </select>
@@ -201,6 +267,7 @@ const AddBill = ({ people, onAddBill }) => {
           <div className="split-preview">
             <h4>Split Preview</h4>
             <p>Each person pays: ₹{(parseFloat(formData.amount) / formData.splitAmong.length).toFixed(2)}</p>
+            <p>Total participants: {formData.splitAmong.length}</p>
           </div>
         )}
 

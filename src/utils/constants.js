@@ -394,9 +394,9 @@ export const DEFAULT_SETTINGS = {
   dataBackup: true
 };
 
-// API Endpoints (if you plan to add backend later)
+// API Endpoints (Fixed - removed process.env reference)
 export const API_ENDPOINTS = {
-  base: process.env.REACT_APP_API_URL || 'http://localhost:3001',
+  base: 'http://localhost:3001', // Hardcoded fallback
   people: '/api/people',
   bills: '/api/bills',
   analytics: '/api/analytics',
