@@ -197,19 +197,6 @@ npm run lint     # Run ESLint
 - [ ] **Offline Mode** - Progressive Web App features
 - [ ] **Analytics Dashboard** - Spending insights and trends
 
-## 🌟 Show Your Support
-
-If you find this project helpful, please consider:
-- ⭐ **Starring** this repository
-- 🍽️ **Using it** for your next group dinner
-- 🐛 **Reporting bugs** you encounter
-- 💡 **Suggesting features** you'd like to see
-- 🤝 **Contributing** to make it better
-
-## 📈 Project Stats
-
-![GitHub stars](https://img.shields.io/github/stars/.shields.io/github/issues/you](https://img.shields.io/github Links
-
 **Made with ❤️ for the community**
 
 **Happy Bill Splitting! 🎉**
