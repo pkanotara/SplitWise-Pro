@@ -17,73 +17,129 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   line-height: 1.6;
-  color: #333;
-  background-color: #f8fafc;
+  color: var(--text-primary);
+  background-color: var(--bg-secondary);
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 #root {
   min-height: 100vh;
 }
 
-/* CSS Variables */
+/* Enhanced CSS Variables for Light Mode */
 :root {
-  --primary-color: #10b981;
+  /* Primary Colors */
+  --primary: #10b981;
   --primary-dark: #059669;
-  --secondary-color: #3b82f6;
-  --danger-color: #ef4444;
-  --warning-color: #f59e0b;
-  --success-color: #10b981;
-  --info-color: #3b82f6;
+  --primary-light: #34d399;
+  --danger: #ef4444;
+  --danger-dark: #dc2626;
+  --warning: #f59e0b;
+  --success: #10b981;
+  --info: #3b82f6;
   
+  /* Text Colors */
   --text-primary: #111827;
   --text-secondary: #6b7280;
   --text-muted: #9ca3af;
+  --text-inverse: #ffffff;
   
+  /* Background Colors */
   --bg-primary: #ffffff;
   --bg-secondary: #f9fafb;
   --bg-tertiary: #f3f4f6;
+  --bg-hover: #f3f4f6;
+  --bg-active: #e5e7eb;
   
-  --border-color: #e5e7eb;
+  /* Border Colors */
+  --border: #e5e7eb;
   --border-light: #f3f4f6;
   --border-dark: #d1d5db;
+  --border-focus: #10b981;
   
-  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
-  --shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
-  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  /* Shadow Colors */
+  --shadow-color: rgba(0, 0, 0, 0.1);
+  --shadow-sm: 0 1px 2px 0 var(--shadow-color);
+  --shadow: 0 1px 3px 0 var(--shadow-color);
+  --shadow-lg: 0 10px 15px -3px var(--shadow-color);
   
+  /* Component Specific */
+  --card-bg: var(--bg-primary);
+  --input-bg: var(--bg-primary);
+  --modal-bg: var(--bg-primary);
+  --notification-bg: var(--bg-primary);
+  
+  /* Spacing */
+  --space-xs: 0.25rem;
+  --space-sm: 0.5rem;
+  --space-md: 0.75rem;
+  --space-lg: 1rem;
+  --space-xl: 1.5rem;
+  --space-2xl: 2rem;
+  --space-3xl: 3rem;
+  
+  /* Typography */
+  --text-xs: 0.75rem;
+  --text-sm: 0.875rem;
+  --text-base: 1rem;
+  --text-lg: 1.125rem;
+  --text-xl: 1.25rem;
+  --text-2xl: 1.5rem;
+  
+  /* Border radius */
   --radius-sm: 4px;
   --radius: 8px;
-  --radius-md: 12px;
-  --radius-lg: 16px;
+  --radius-lg: 12px;
+  --radius-full: 50%;
   
-  --space-1: 0.25rem;
-  --space-2: 0.5rem;
-  --space-3: 0.75rem;
-  --space-4: 1rem;
-  --space-5: 1.25rem;
-  --space-6: 1.5rem;
-  --space-8: 2rem;
-  --space-10: 2.5rem;
-  --space-12: 3rem;
-  
-  --transition: all 0.2s ease;
-  --transition-slow: all 0.3s ease;
+  /* Transitions */
+  --transition: all 0.3s ease;
+  --transition-fast: all 0.15s ease;
 }
 
-/* Dark mode variables */
-[data-theme="dark"] {
+/* Enhanced Dark Mode Variables */
+[data-theme="dark"],
+.dark-mode {
+  /* Text Colors for Dark Mode */
   --text-primary: #f9fafb;
   --text-secondary: #d1d5db;
   --text-muted: #9ca3af;
+  --text-inverse: #111827;
   
-  --bg-primary: #111827;
-  --bg-secondary: #1f2937;
+  /* Background Colors for Dark Mode */
+  --bg-primary: #1f2937;
+  --bg-secondary: #111827;
   --bg-tertiary: #374151;
+  --bg-hover: #374151;
+  --bg-active: #4b5563;
   
-  --border-color: #374151;
+  /* Border Colors for Dark Mode */
+  --border: #374151;
   --border-light: #4b5563;
   --border-dark: #6b7280;
+  
+  /* Shadow Colors for Dark Mode */
+  --shadow-color: rgba(0, 0, 0, 0.3);
+  --shadow-sm: 0 1px 2px 0 var(--shadow-color);
+  --shadow: 0 1px 3px 0 var(--shadow-color);
+  --shadow-lg: 0 10px 15px -3px var(--shadow-color);
+  
+  /* Component Specific for Dark Mode */
+  --card-bg: var(--bg-primary);
+  --input-bg: var(--bg-tertiary);
+  --modal-bg: var(--bg-primary);
+  --notification-bg: var(--bg-tertiary);
+  
+  /* Primary colors remain the same but we might want slightly different shades */
+  --primary: #34d399;
+  --primary-dark: #10b981;
+  --primary-light: #6ee7b7;
+}
+
+/* Apply dark mode to body */
+.dark-mode {
+  background-color: var(--bg-secondary);
+  color: var(--text-primary);
 }
 
 /* Base App Styles */
@@ -99,7 +155,7 @@ body {
 /* Header */
 .app-header {
   background: var(--bg-primary);
-  border-bottom: 1px solid var(--border-color);
+  border-bottom: 1px solid var(--border);
   padding: 1rem 2rem;
   position: sticky;
   top: 0;
@@ -121,12 +177,13 @@ body {
   gap: 0.5rem;
   font-size: 1.5rem;
   font-weight: 700;
-  color: var(--primary-color);
+  color: var(--primary);
   margin: 0;
 }
 
 .logo {
   font-size: 2rem;
+  color: var(--primary);
 }
 
 .header-actions {
@@ -134,26 +191,32 @@ body {
   gap: 0.5rem;
 }
 
-.theme-toggle, .export-btn, .clear-btn {
+.theme-toggle, 
+.export-btn, 
+.clear-btn {
   padding: 0.5rem;
-  border: 1px solid var(--border-color);
+  border: 1px solid var(--border);
   border-radius: var(--radius);
   background: var(--bg-primary);
   cursor: pointer;
   transition: var(--transition);
   color: var(--text-primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .theme-toggle:hover, 
 .export-btn:hover, 
 .clear-btn:hover {
-  background: var(--bg-secondary);
+  background: var(--bg-hover);
+  transform: translateY(-1px);
 }
 
 /* Navigation */
 .app-nav {
   background: var(--bg-primary);
-  border-bottom: 1px solid var(--border-color);
+  border-bottom: 1px solid var(--border);
   padding: 0 2rem;
   display: flex;
   gap: 1rem;
@@ -177,12 +240,12 @@ body {
 
 .nav-tab:hover {
   color: var(--text-primary);
-  background: var(--bg-secondary);
+  background: var(--bg-hover);
 }
 
 .nav-tab.active {
-  color: var(--primary-color);
-  border-bottom-color: var(--primary-color);
+  color: var(--primary);
+  border-bottom-color: var(--primary);
 }
 
 .nav-icon {
@@ -204,16 +267,16 @@ body {
 
 /* Cards */
 .card {
-  background: var(--bg-primary);
-  border-radius: var(--radius-md);
+  background: var(--card-bg);
+  border-radius: var(--radius-lg);
   box-shadow: var(--shadow);
   padding: 1.5rem;
   margin-bottom: 1.5rem;
-  border: 1px solid var(--border-color);
+  border: 1px solid var(--border);
 }
 
 .card-title {
-  font-size: 1.25rem;
+  font-size: var(--text-xl);
   font-weight: 600;
   margin-bottom: 1rem;
   color: var(--text-primary);
@@ -234,10 +297,10 @@ body {
 }
 
 .stat-card {
-  background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+  background: linear-gradient(135deg, var(--primary), var(--info));
   color: white;
   padding: 1.5rem;
-  border-radius: var(--radius-md);
+  border-radius: var(--radius-lg);
   text-align: center;
   box-shadow: var(--shadow);
 }
@@ -278,6 +341,7 @@ body {
   display: block;
   margin-bottom: 1rem;
   opacity: 0.5;
+  color: var(--text-muted);
 }
 
 .empty-state h3 {
@@ -290,19 +354,7 @@ body {
 .empty-state p {
   font-size: 0.875rem;
   margin: 0;
-}
-
-/* Form Styles */
-.form {
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-}
-
-.form-row {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 1rem;
+  color: var(--text-secondary);
 }
 
 /* Tab Content */
@@ -314,14 +366,72 @@ body {
   gap: 2rem;
 }
 
+/* Focus styles for accessibility */
+*:focus {
+  outline: 2px solid var(--primary);
+  outline-offset: 2px;
+}
+
+button:focus,
+input:focus,
+select:focus,
+textarea:focus {
+  outline: 2px solid var(--primary);
+  outline-offset: -2px;
+}
+
+/* Scrollbar styles for dark mode */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--bg-secondary);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--border);
+  border-radius: var(--radius);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--border-dark);
+}
+
+/* Animation classes */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideIn {
+  from {
+    transform: translateX(100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+.animate-fadeIn {
+  animation: fadeIn 0.3s ease-out;
+}
+
+.animate-slideIn {
+  animation: slideIn 0.3s ease-out;
+}
+
 /* Responsive Design */
 @media (max-width: 768px) {
   .app-main {
     padding: 1rem;
-  }
-  
-  .form-row {
-    grid-template-columns: 1fr;
   }
   
   .dashboard-grid {
@@ -363,64 +473,27 @@ body {
   }
 }
 
-/* Focus styles for accessibility */
-*:focus {
-  outline: 2px solid var(--primary-color);
-  outline-offset: 2px;
-}
-
-button:focus,
-input:focus,
-select:focus,
-textarea:focus {
-  outline: 2px solid var(--primary-color);
-  outline-offset: -2px;
-}
-
-/* Scrollbar styles */
-::-webkit-scrollbar {
-  width: 8px;
-  height: 8px;
-}
-
-::-webkit-scrollbar-track {
-  background: var(--bg-secondary);
-}
-
-::-webkit-scrollbar-thumb {
-  background: var(--border-color);
-  border-radius: var(--radius);
-}
-
-::-webkit-scrollbar-thumb:hover {
-  background: var(--border-dark);
-}
-
-/* Animation classes */
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(10px);
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+  :root {
+    --border: #000000;
+    --text-secondary: #000000;
   }
-  to {
-    opacity: 1;
-    transform: translateY(0);
+  
+  .dark-mode {
+    --border: #ffffff;
+    --text-secondary: #ffffff;
   }
 }
 
-@keyframes slideIn {
-  from {
-    transform: translateX(100%);
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
   }
-  to {
-    transform: translateX(0);
-  }
-}
-
-.animate-fadeIn {
-  animation: fadeIn 0.3s ease-out;
-}
-
-.animate-slideIn {
-  animation: slideIn 0.3s ease-out;
 }

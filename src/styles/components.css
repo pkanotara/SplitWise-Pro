@@ -1,4 +1,4 @@
-/* ===== CSS VARIABLES ===== */
+/* Enhanced CSS Variables (same as globals.css) */
 :root {
   /* Colors - Minimal palette */
   --primary: #10b981;
@@ -12,6 +12,12 @@
   --bg-white: #ffffff;
   --bg-gray: #f9fafb;
   --bg-light: #f3f4f6;
+  
+  /* Component specific */
+  --card-bg: var(--bg-white);
+  --input-bg: var(--bg-white);
+  --modal-bg: var(--bg-white);
+  --notification-bg: var(--bg-white);
   
   /* Spacing - Consistent scale */
   --space-xs: 0.25rem;
@@ -45,6 +51,35 @@
   --transition: all 0.2s ease;
 }
 
+/* Dark mode variables */
+[data-theme="dark"],
+.dark-mode {
+  --text-primary: #f9fafb;
+  --text-secondary: #d1d5db;
+  --text-muted: #9ca3af;
+  
+  --bg-white: #1f2937;
+  --bg-gray: #111827;
+  --bg-light: #374151;
+  
+  --border: #374151;
+  --border-light: #4b5563;
+  --border-dark: #6b7280;
+  
+  --card-bg: #1f2937;
+  --input-bg: #374151;  
+  --modal-bg: #1f2937;
+  --notification-bg: #374151;
+  
+  --primary: #34d399;
+  --primary-dark: #10b981;
+  
+  /* Enhanced shadows for dark mode */
+  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.3);
+  --shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.3);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.3);
+}
+
 /* ===== BUTTON COMPONENTS ===== */
 .btn {
   display: inline-flex;
@@ -61,6 +96,7 @@
   text-decoration: none;
   background: transparent;
   line-height: 1;
+  color: var(--text-primary);
 }
 
 .btn:disabled {
@@ -70,7 +106,7 @@
 
 .btn-primary {
   background: var(--primary);
-  color: white;
+  color: var(--bg-white);
   border-color: var(--primary);
 }
 
@@ -93,10 +129,12 @@
 .btn-outline {
   border-color: var(--border);
   color: var(--text-primary);
+  background: transparent;
 }
 
 .btn-outline:hover:not(:disabled) {
   background: var(--bg-gray);
+  border-color: var(--border-dark);
 }
 
 .btn-danger {
@@ -156,17 +194,21 @@
   padding: var(--space-md);
   border: 1px solid var(--border);
   border-radius: var(--radius);
-  background: var(--bg-white);
+  background: var(--input-bg);
   color: var(--text-primary);
   transition: var(--transition);
   font-size: var(--text-sm);
+}
+
+.form-input::placeholder {
+  color: var(--text-muted);
 }
 
 .form-input:focus, 
 .form-select:focus {
   outline: none;
   border-color: var(--primary);
-  box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.1);
+  box-shadow: 0 0 0 3px rgba(52, 211, 153, 0.1);
 }
 
 .form-input.error, 
@@ -181,11 +223,12 @@
 
 /* ===== CARD COMPONENTS ===== */
 .card {
-  background: var(--bg-white);
+  background: var(--card-bg);
   border: 1px solid var(--border);
   border-radius: var(--radius);
   padding: var(--space-xl);
   margin-bottom: var(--space-lg);
+  box-shadow: var(--shadow);
 }
 
 .card-title {
@@ -211,13 +254,14 @@
 }
 
 .modal-content {
-  background: var(--bg-white);
+  background: var(--modal-bg);
   border-radius: var(--radius-lg);
   box-shadow: var(--shadow-lg);
   max-width: 500px;
   width: 100%;
   max-height: 90vh;
   overflow: hidden;
+  border: 1px solid var(--border);
 }
 
 .modal-header {
@@ -243,6 +287,9 @@
   color: var(--text-secondary);
   padding: var(--space-xs);
   line-height: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .modal-close:hover {
@@ -268,24 +315,43 @@
   z-index: 1001;
   max-width: 400px;
   animation: slideIn 0.3s ease-out;
+  border: 1px solid;
 }
 
 .notification-success {
   background: #d1fae5;
-  border: 1px solid #a7f3d0;
+  border-color: #a7f3d0;
   color: #065f46;
+}
+
+.dark-mode .notification-success {
+  background: #064e3b;
+  border-color: #065f46;
+  color: #a7f3d0;
 }
 
 .notification-error {
   background: #fee2e2;
-  border: 1px solid #fecaca;
+  border-color: #fecaca;
   color: #991b1b;
+}
+
+.dark-mode .notification-error {
+  background: #7f1d1d;
+  border-color: #991b1b;
+  color: #fecaca;
 }
 
 .notification-info {
   background: #dbeafe;
-  border: 1px solid #bfdbfe;
+  border-color: #bfdbfe;
   color: #1e40af;
+}
+
+.dark-mode .notification-info {
+  background: #1e3a8a;
+  border-color: #1e40af;
+  color: #bfdbfe;
 }
 
 .notification-close {
@@ -295,14 +361,16 @@
   cursor: pointer;
   margin-left: auto;
   opacity: 0.7;
+  color: currentColor;
 }
 
 /* ===== PEOPLE COMPONENTS ===== */
 .people-container {
-  background: var(--bg-white);
+  background: var(--card-bg);
   border: 1px solid var(--border);
   border-radius: var(--radius);
   overflow: hidden;
+  box-shadow: var(--shadow);
 }
 
 .people-header {
@@ -326,7 +394,7 @@
   height: 40px;
   border: 2px solid var(--primary);
   border-radius: var(--radius-full);
-  background: var(--bg-white);
+  background: var(--card-bg);
   cursor: pointer;
   display: flex;
   align-items: center;
@@ -345,7 +413,7 @@
 }
 
 .add-person-btn:hover .add-icon {
-  color: white;
+  color: var(--card-bg);
 }
 
 .people-list {
@@ -358,6 +426,7 @@
   gap: var(--space-lg);
   padding: var(--space-lg) var(--space-xl);
   border-bottom: 1px solid var(--border-light);
+  background: var(--card-bg);
 }
 
 .person-item:last-child {
@@ -395,6 +464,13 @@
   font-size: var(--text-sm);
   color: var(--text-secondary);
   margin: 2px 0;
+  display: flex;
+  align-items: center;
+  gap: var(--space-xs);
+}
+
+.contact-icon {
+  font-size: 1rem;
 }
 
 .person-balance {
@@ -411,9 +487,19 @@
   color: #065f46;
 }
 
+.dark-mode .person-balance.positive {
+  background: #064e3b;
+  color: #a7f3d0;
+}
+
 .person-balance.negative {
   background: #fee2e2;
   color: #991b1b;
+}
+
+.dark-mode .person-balance.negative {
+  background: #7f1d1d;
+  color: #fecaca;
 }
 
 .person-balance.neutral {
@@ -454,6 +540,7 @@
 
 .category-icon {
   font-size: var(--text-xl);
+  color: var(--primary);
 }
 
 .bill-description {
@@ -484,6 +571,18 @@
   color: var(--text-secondary);
 }
 
+.bill-date,
+.bill-payer,
+.bill-split {
+  display: flex;
+  align-items: center;
+  gap: var(--space-xs);
+}
+
+.info-icon {
+  font-size: 1rem;
+}
+
 .split-details {
   font-size: var(--text-sm);
   color: var(--text-secondary);
@@ -512,9 +611,19 @@
   border-color: #a7f3d0;
 }
 
+.dark-mode .balance-item.positive {
+  background: #064e3b;
+  border-color: #065f46;
+}
+
 .balance-item.negative {
   background: #fee2e2;
   border-color: #fecaca;
+}
+
+.dark-mode .balance-item.negative {
+  background: #7f1d1d;
+  border-color: #991b1b;
 }
 
 .balance-item.neutral {
@@ -544,18 +653,27 @@
 
 /* ===== SETTLEMENT COMPONENTS ===== */
 .settlement-card {
-  background: var(--bg-white);
+  background: var(--card-bg);
   border: 1px solid var(--border);
   border-radius: var(--radius);
   padding: var(--space-xl);
   margin-bottom: var(--space-lg);
+  box-shadow: var(--shadow);
 }
 
 .settlement-title {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
   font-size: var(--text-xl);
   font-weight: 600;
   color: var(--text-primary);
   margin: 0 0 var(--space-lg) 0;
+}
+
+.title-icon {
+  font-size: 1.5rem;
+  color: var(--primary);
 }
 
 .settlements-list {
@@ -588,7 +706,7 @@
 
 .arrow {
   color: var(--text-secondary);
-  font-weight: bold;
+  font-size: 1.2rem;
 }
 
 .settlement-amount {
@@ -604,9 +722,17 @@
 }
 
 .settlement-note p {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
   font-size: var(--text-sm);
   color: var(--text-secondary);
   margin: 0;
+}
+
+.note-icon {
+  font-size: 1rem;
+  color: var(--primary);
 }
 
 /* ===== SPLIT FORM COMPONENTS ===== */
@@ -637,6 +763,7 @@
   border-radius: var(--radius);
   cursor: pointer;
   transition: var(--transition);
+  background: var(--card-bg);
 }
 
 .split-person:hover {
@@ -657,6 +784,12 @@
   margin-top: var(--space-lg);
 }
 
+.dark-mode .split-preview {
+  background: #064e3b;
+  border-color: #065f46;
+  color: #a7f3d0;
+}
+
 /* ===== EMPTY STATE COMPONENTS ===== */
 .empty-state {
   text-align: center;
@@ -664,10 +797,11 @@
 }
 
 .empty-icon {
-  font-size: var(--space-3xl);
+  font-size: 3rem;
   opacity: 0.5;
   margin-bottom: var(--space-lg);
   display: block;
+  color: var(--text-muted);
 }
 
 .empty-state h3 {
@@ -795,9 +929,6 @@ select:focus {
 .mb-sm { margin-bottom: var(--space-sm); }
 .mb-md { margin-bottom: var(--space-md); }
 .mb-lg { margin-bottom: var(--space-lg); }
-
-
-
 
 /* React Icons Styling */
 .nav-icon,

@@ -31,6 +31,7 @@ function App() {
 
   const { notification, showNotification, hideNotification } = useNotification();
   const { calculateBalances, calculateSettlements } = useBillCalculations(people, bills);
+  
 
   const handleAddPerson = (personData) => {
     if (people.find(p => p.name.toLowerCase() === personData.name.toLowerCase())) {
